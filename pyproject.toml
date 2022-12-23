@@ -5,17 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "m4b_util"
 description = "A collection of command line utilities for creating, editing, and generally working with m4b files."
+license = {text = "MIT License"}
+keywords = ["Audiobook", "m4b"]
 readme = "README.md"
 requires-python = ">=3.8"
 dynamic = ["version"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: MIT License",
+    "Development Status :: 4 - Beta",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
 ]
 dependencies = [
     "natsort ~= 8.2.0",
@@ -24,6 +22,9 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["tox", "pytest-cov"]
+
+[project.urls]
+repository = "https://github.com/Tsubashi/m4b-util"
 
 [project.scripts]
 m4b-util = "m4b_util:__main__.main"
