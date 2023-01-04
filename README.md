@@ -12,6 +12,11 @@ individual file as its own chapter. It can get chapter names from the original f
 from command line arguments, or just number them sequentially. By default, it only scans for mp3 files, but any file 
 extension can be added via arguments.
 
+**Example:**
+```shell
+$ m4b-util bind /path/to/inputs  --title "My Book" --cover /path/to/cover.png -e m4a -e .mp4 --output-dir /path/to/output 
+```
+
 ### Cover
 The `cover` command adds and extracts cover images.
 
@@ -28,11 +33,6 @@ of each segment is set from the start time of the next segment.
 **Example:**
 ```shell
 $ m4b-util labels --from-label-file /path/to/labels.txt --to-book /path/to/existing/book.m4b --to-metadata-file /path/to/new_labels.txt
-```
-
-**Example:**
-```shell
-$ m4b-util bind /path/to/inputs  --title "My Book" --cover /path/to/cover.png -e m4a -e .mp4 --output-dir /path/to/output 
 ```
 
 ### Slide
