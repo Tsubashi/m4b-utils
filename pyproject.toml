@@ -58,7 +58,7 @@ python =
     3.10: flake8,py310
 
 [testenv]
-commands = pytest --cov {envsitepackagesdir}/src --cov-append --cov-report=term-missing
+commands = pytest --cov {envsitepackagesdir}/src/m4b-util --cov-append --cov-report=term-missing
 deps =
     pytest
     pytest-cov

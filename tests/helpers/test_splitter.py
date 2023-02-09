@@ -83,7 +83,7 @@ def test_title_metadata(silences_file_path, tmp_path):
     """Split a file into four parts."""
     def check_func(input_file_path):
         probe = ffprobe.run_probe(input_file_path)
-        assert input_file_path.name == probe.tags["title"]
+        assert input_file_path.stem == probe.tags["title"]
     output_path = tmp_path / "output"
     segment_list = [
         SegmentData(id=0, start_time=0.0, end_time=2.5, title="segment_0000"),
@@ -103,4 +103,4 @@ def test_title_metadata(silences_file_path, tmp_path):
         output_dir_path=output_path,
         segment_list=segment_list,
     )
-    testhelpers.check_output_folder(output_path=output_path, expected_files=expected_files)
+    testhelpers.check_output_folder(output_path=output_path, expected_files=expected_files, check_func=check_func)
