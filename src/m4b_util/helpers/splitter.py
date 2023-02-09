@@ -7,6 +7,7 @@ def split(
         input_path,
         output_dir_path,
         segment_list,
+        padding=0.,
         output_pattern="segment_{i:04d}.mp3"
 ):
     """Split a file into multiple, based on segments."""
@@ -24,6 +25,10 @@ def split(
                "-map", "0:a", "-map_chapters", "-1", "-y"]
         if segment.title:
             cmd.extend(["-metadata", f"title={segment.title}"])
+        cmd.append(output_path)
+
+        if padding > 0.:
+            cmd.extend(["-af", f"apad=pad_dur={padding}"])
         cmd.append(output_path)
 
         name = f"Splitting segment {i}"

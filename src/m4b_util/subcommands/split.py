@@ -20,10 +20,12 @@ def _parse_args():
     parser.add_argument('-m', "--minimum-segment-time", type=float, default=1.0,
                         help='Smallest segment size to consider, in seconds.')
     parser.add_argument('-o', "--output-dir", type=str, help="Directory to place output.")
-    parser.add_argument('-p', '--output-pattern', type=str, default="segment_{i:04d}.mp3",
+    parser.add_argument('-p', "--padding", type=float,
+                        help="Amount of silence to add to the end of each file (seconds).")
+    parser.add_argument('-s', "--start-time", type=float, help='Start time (seconds)')
+    parser.add_argument('--output-pattern', type=str, default="segment_{i:04d}.mp3",
                         help="Output filename pattern (e.g. `segment_{i:04d}.mp3`), use '{i}' for sequence and "
                              "'{title}' for chapter title.")
-    parser.add_argument('-s', "--start-time", type=float, help='Start time (seconds)')
 
     silence_options = parser.add_argument_group('split-by-silence options')
     silence_options.add_argument("--silence-threshold", default=-35, type=int, help='Silence threshold (in dB)')
@@ -80,5 +82,6 @@ def run():
         input_path=input_path,
         output_dir_path=output_path,
         output_pattern=args.output_pattern,
+        padding=args.padding,
         segment_list=segment_list
     )

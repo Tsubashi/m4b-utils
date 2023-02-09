@@ -104,3 +104,35 @@ def test_title_metadata(silences_file_path, tmp_path):
         segment_list=segment_list,
     )
     testhelpers.check_output_folder(output_path=output_path, expected_files=expected_files, check_func=check_func)
+
+
+def test_padding(silences_file_path, tmp_path):
+    """Add extra silence to the end of each file."""
+    def check_func(input_file_path):
+        assert input_file_path.is_file()
+        assert ffprobe.get_file_duration(input_file_path) == 3.024
+
+    output_path = tmp_path / "output"
+    segment_list = [
+        SegmentData(id=0, start_time=0.0, end_time=2.5, title="segment_0000"),
+        SegmentData(id=1, start_time=2.5, end_time=5.0, title="segment_0001"),
+        SegmentData(id=2, start_time=5.0, end_time=7.5, title="segment_0002"),
+        SegmentData(id=3, start_time=7.5, end_time=10., title="segment_0003"),
+
+    ]
+    expected_files = [
+        "segment_0000.mp3",
+        "segment_0001.mp3",
+        "segment_0002.mp3",
+        "segment_0003.mp3",
+    ]
+    splitter.split(
+        input_path=silences_file_path,
+        output_dir_path=output_path,
+        padding=0.5,
+        segment_list=segment_list,
+    )
+    testhelpers.check_output_folder(output_path=output_path, expected_files=expected_files, check_func=check_func)
+
+
+
