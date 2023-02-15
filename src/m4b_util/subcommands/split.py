@@ -26,6 +26,8 @@ def _parse_args():
     parser.add_argument('--output-pattern', type=str, default="segment_{i:04d}.mp3",
                         help="Output filename pattern (e.g. `segment_{i:04d}.mp3`), use '{i}' for sequence and "
                              "'{title}' for chapter title.")
+    parser.add_argument("--to-labels", type=str, default="labels.txt",
+                        help="Write splits to an audacity label file, instead of splitting the actual file.")
 
     silence_options = parser.add_argument_group('split-by-silence options')
     silence_options.add_argument("--silence-threshold", default=-35, type=int, help='Silence threshold (in dB)')
@@ -78,10 +80,16 @@ def run():
         output_path = Path(args.output_dir)
     else:
         output_path = Path()
-    splitter.split(
-        input_path=input_path,
-        output_dir_path=output_path,
-        output_pattern=args.output_pattern,
-        padding=args.padding,
-        segment_list=segment_list
-    )
+
+    if not args.to_labels:
+        splitter.split(
+            input_path=input_path,
+            output_dir_path=output_path,
+            output_pattern=args.output_pattern,
+            padding=args.padding,
+            segment_list=segment_list
+        )
+    else:
+        with open(args.to_labels, 'w') as f:
+            for segment in segment_list:
+                f.write(f"{segment.start_time}\t{segment.start_time}\t{segment.title}\n")
