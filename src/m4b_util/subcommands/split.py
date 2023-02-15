@@ -26,7 +26,7 @@ def _parse_args():
     parser.add_argument('--output-pattern', type=str, default="segment_{i:04d}.mp3",
                         help="Output filename pattern (e.g. `segment_{i:04d}.mp3`), use '{i}' for sequence and "
                              "'{title}' for chapter title.")
-    parser.add_argument("--to-labels", type=str, default="labels.txt",
+    parser.add_argument("--to-labels", type=str,
                         help="Write splits to an audacity label file, instead of splitting the actual file.")
 
     silence_options = parser.add_argument_group('split-by-silence options')
