@@ -25,7 +25,6 @@ def split(
                "-map", "0:a", "-map_chapters", "-1", "-y"]
         if segment.title:
             cmd.extend(["-metadata", f"title={segment.title}"])
-        cmd.append(output_path)
 
         if padding > 0.:
             cmd.extend(["-af", f"apad=pad_dur={padding}"])

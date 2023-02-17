@@ -90,7 +90,6 @@ def test_title_metadata(silences_file_path, tmp_path):
         SegmentData(id=1, start_time=2.5, end_time=5.0, title="segment_0001"),
         SegmentData(id=2, start_time=5.0, end_time=7.5, title="segment_0002"),
         SegmentData(id=3, start_time=7.5, end_time=10., title="segment_0003"),
-
     ]
     expected_files = [
         "segment_0000.mp3",

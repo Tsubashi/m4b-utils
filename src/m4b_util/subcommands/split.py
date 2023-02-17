@@ -82,11 +82,12 @@ def run():
         output_path = Path()
 
     if not args.to_labels:
+        padding = args.padding or 0.
         splitter.split(
             input_path=input_path,
             output_dir_path=output_path,
             output_pattern=args.output_pattern,
-            padding=args.padding,
+            padding=padding,
             segment_list=segment_list
         )
     else:

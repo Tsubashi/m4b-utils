@@ -185,7 +185,7 @@ def test_split_audio_segment_pattern(tmp_path, silences_file_path):
         str(silences_file_path),
         "-o", str(output_path),
         "--silence-duration", "1.5",
-        "-p", "chunk_{:02d}.mp3",
+        "--output-pattern", "chunk_{:02d}.mp3",
     ]
     # Make sure the files we expect are there
     expected_files = (
@@ -207,7 +207,7 @@ def test_minimum_segment_size(tmp_path, silences_file_path, capsys):
         "-o", str(output_path),
         "--silence-duration", "1.5",
         "--minimum-segment-time", "12",
-        "-p", "chunk_{:02d}.mp3",
+        "--output-pattern", "chunk_{:02d}.mp3",
     ]
     with testhelpers.expect_exit_with_output(capsys, "Not enough segments found."):
         _run_split_cmd(cmd)
