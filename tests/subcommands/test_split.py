@@ -211,3 +211,25 @@ def test_minimum_segment_size(tmp_path, silences_file_path, capsys):
     ]
     with testhelpers.expect_exit_with_output(capsys, "Not enough segments found."):
         _run_split_cmd(cmd)
+
+
+def test_to_labels(tmp_path, silences_file_path):
+    """Write split locations to an audacity label file, instead of splitting."""
+    output_path = tmp_path / "labels.txt"
+    cmd = [
+        "silence",
+        str(silences_file_path),
+        "--silence-duration", "1.5",
+        "--to-labels", str(output_path)
+    ]
+    _run_split_cmd(cmd)
+    expected_lines = [
+        "0.0\t0.0\tNone\n",
+        "5.0\t5.0\tNone\n",
+        "10.0\t10.0\tNone\n",
+        "15.0\t15.0\tNone\n",
+    ]
+    with open(output_path, 'r') as f:
+        for line in f:
+            assert line == expected_lines.pop(0)
+
