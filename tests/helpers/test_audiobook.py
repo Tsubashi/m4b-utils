@@ -597,3 +597,9 @@ def test_tmp_path():
     new_tmp_path = b._tmp_path
     assert new_tmp_path == tmp_path
     assert tmp_path.is_dir()
+
+
+def test_avoid_slashes_in_filename():
+    ab = Audiobook(author="slash/name", title="name\\with/slashes")
+    assert "/" not in ab.suggested_file_name
+    assert "\\" not in ab.suggested_file_name

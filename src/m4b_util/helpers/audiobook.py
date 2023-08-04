@@ -17,8 +17,6 @@ from .segment_data import SegmentData
 class Audiobook:
     """Store all the info pertaining to an audiobook."""
     author: str = None
-    # Set duration to a big number, (hopefully larger than our actual duration)
-    # just in case we try to write chapters without knowing the final duration.
     chapters: list = field(default_factory=lambda: [])
     cover: str = None
     date: str = None
@@ -41,6 +39,15 @@ class Audiobook:
         """Calculate output name based on what we currently know."""
         # Use a default is self.output_name is not set.
         name = self.output_name or f"{self.author} - {self.title}.m4b"
+
+        # Remove non-allowed file characters
+        new_name = ""
+        for char in name:
+            if (char.isalnum() or char in "._- "):
+                new_name += char
+            else:
+                new_name += "_"
+        name = new_name
 
         # Make sure it ends with .m4b
         if not name.endswith(".m4b"):
