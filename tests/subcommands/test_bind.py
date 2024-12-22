@@ -69,3 +69,10 @@ def test_bind_fail(tmp_path, capsys):
     _run_bind_cmd([str(fake_folder)])
     output = capsys.readouterr()
     assert "Writing" not in output.out
+
+
+def test_bind_use_filename(wav_path):
+    """Use the filenames as the chapter titles."""
+    with patch("m4b_util.subcommands.bind.Audiobook") as mock_book:
+        _run_bind_cmd([str(wav_path), "--use-filename"])
+        mock_book.add_chapters_from_directory.assert_called_with(use_filenames=True)

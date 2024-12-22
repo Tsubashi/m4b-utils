@@ -22,12 +22,12 @@ def _parse_args():
                                                               " is '[Author] - [Title].m4b'.")
     parser.add_argument('-t', "--title", type=str, help="Title of the audiobook.")
     parser.add_argument("--date", type=str, help="Date to include in metadata.")
-    parser.add_argument("--decode-durations", "--decode-duration", action='store_true',
+    parser.add_argument("--decode-durations", "--decode-duration", action='store_true', default=False,
                         help="Fully decode each file to determine its duration (Slower, but more accurate).")
     parser.add_argument("--show-order", action='store_true',
                         help="Show the order the files would be read in, then exit.")
     parser.add_argument("--keep-temp-files", action='store_true', help="Skip cleanup. (Debugging)")
-    parser.add_argument("--use-filename", "--use-filenames", action='store_true',
+    parser.add_argument("--use-filename", "--use-filenames", action='store_true', default=False,
                         help="Use the filename as the chapter title instead of the title from the file's metadata.")
 
     return parser.parse_args(sys.argv[2:])
@@ -59,7 +59,11 @@ def run():
         return 0
 
     # Add the files to the binder
-    book.add_chapters_from_directory(args.input_folder)
+    book.add_chapters_from_directory(
+        input_dir=args.input_folder,
+        use_filenames=args.use_filename,
+        decode_durations=args.decode_durations
+    )
 
     # Run the binder
     output_path = Path()
