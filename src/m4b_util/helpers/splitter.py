@@ -20,10 +20,21 @@ def split(
         output_dir_path.mkdir(exist_ok=True)
         output_path = output_dir_path / output_pattern.format(i, i=i, title=segment.title)
 
-        cmd = ["ffmpeg", "-ss", str(segment.start_time), "-t", str(time), "-i", input_path,
-               "-map", "0:a", "-map_chapters", "-1", "-y"]
+        # Set up our FFMPEG command
+        cmd = ["ffmpeg", "-ss", str(segment.start_time), "-t", str(time), "-i", input_path]
+
+        # Check to see if we had a cover image. If so, include it
+        if (output_dir_path / "cover.png").exists():
+            cmd.extend(["-i", output_dir_path / "cover.png", "-map", "1:0"])
+
+        # Add the guaranteed mappings
+        cmd.extend(["-map", "0:a", "-map_chapters", "-1", "-y"])
+
+        # If we have a title, add it to the metadata
         if segment.title:
             cmd.extend(["-metadata", f"title={segment.title}"])
+
+        # Finish the command with our output path
         cmd.append(output_path)
 
         name = f"Splitting segment {i}"

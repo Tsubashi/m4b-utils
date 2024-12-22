@@ -69,7 +69,7 @@ def labels_from_segment_data(segments):
     """Generate labels from a segment data list."""
     labels = list()
     for segment in segments:
-        labels.append(f"{segment.start_time}\t{segment.end_time}\t{segment.title}")
+        labels.append(f"{segment.start_time}\t{segment.start_time}\t{segment.title}")
     return labels
 
 
