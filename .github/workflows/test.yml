@@ -41,7 +41,7 @@ jobs:
         # Now run the full flake check
         flake8 . --count --statistics
     - name: Setup ffmpeg
-      uses: FedericoCarboni/setup-ffmpeg@v2
+      uses: FedericoCarboni/setup-ffmpeg@v3
       id: setup-ffmpeg
     - name: Test with pytest
       run: |
