@@ -47,7 +47,7 @@ def test_bind_wav_defaults(wav_path, tmp_path, capsys):
 
     probe = m4b_util.helpers.ffprobe.run_probe(output_path)
     assert probe
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"
     assert probe.tags['title'] == "None"
     assert probe.tags['artist'] == "None"

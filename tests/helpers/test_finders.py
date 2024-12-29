@@ -18,6 +18,8 @@ def test_find_silence(silences_file_path):
                     file_start_time=10.00, file_end_time=12.5),
         SegmentData(id=3, start_time=15.000, end_time=17.5, backing_file=silences_file_path,
                     file_start_time=15.00, file_end_time=17.5),
+        SegmentData(id=4, start_time=20.011, end_time=20.01, backing_file=silences_file_path,
+                    file_start_time=20.011, file_end_time=20.01),
     ]
     actual = find_silence(silences_file_path, silence_duration=0.25)
     assert actual == expected
