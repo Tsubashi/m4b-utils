@@ -74,5 +74,8 @@ def test_bind_fail(tmp_path, capsys):
 def test_bind_use_filename(wav_path):
     """Use the filenames as the chapter titles."""
     with patch("m4b_util.subcommands.bind.Audiobook") as mock_book:
+        mock_book = mock_book.return_value  # Required since we want to mock a specific instance, not the class.
         _run_bind_cmd([str(wav_path), "--use-filename"])
-        mock_book.add_chapters_from_directory.assert_called_with(use_filenames=True)
+        # Since assert_called_with would require us to specify all arguments, we check the call args for the one we care
+        # about manually.
+        assert mock_book.add_chapters_from_directory.call_args.kwargs['use_filenames'] is True

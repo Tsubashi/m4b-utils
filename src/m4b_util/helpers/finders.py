@@ -44,10 +44,16 @@ def _parse_silence_lines(lines, start_time, end_time):
             duration = hours * 3600 + minutes * 60 + seconds + start_time
 
     if len(segment_starts) > len(segment_ends):
-        # Finished with non-silence.
-        segment_ends.append(duration)
+        # If we've got a valid segment start with no segment end, we can assume the input ended without silence.
+        # That means we need to add the duration as the final segment end time.
+        if segment_starts[-1] < duration:
+            segment_ends.append(duration)
+        else:
+            # If we do have a segment start that is beyond the duration, then we should just remove it.
+            segment_starts.pop()
 
-    return list(zip(segment_starts, segment_ends))
+    segment_list = list(zip(segment_starts, segment_ends))
+    return segment_list
 
 
 def find_silence(input_path, start_time=None, end_time=None, silence_duration=3.0, silence_threshold=-35):

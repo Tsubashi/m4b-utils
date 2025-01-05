@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from m4b_util.helpers import SegmentData
-from m4b_util.helpers.finders import find_chapters, find_silence
+from m4b_util.helpers.finders import _parse_silence_lines, find_chapters, find_silence  # noqa: F401
 
 
 fake_input = Path("Not-a-real-file")
@@ -18,8 +18,6 @@ def test_find_silence(silences_file_path):
                     file_start_time=10.00, file_end_time=12.5),
         SegmentData(id=3, start_time=15.000, end_time=17.5, backing_file=silences_file_path,
                     file_start_time=15.00, file_end_time=17.5),
-        SegmentData(id=4, start_time=20.011, end_time=20.01, backing_file=silences_file_path,
-                    file_start_time=20.011, file_end_time=20.01),
     ]
     actual = find_silence(silences_file_path, silence_duration=0.25)
     assert actual == expected
@@ -118,3 +116,13 @@ def test_chapters_no_chapters(mp3_path):
 def test_chapters_unreadable_file(fake_file):
     """Find no chapters in a non-audio file."""
     assert find_chapters(fake_file) == []
+
+
+def test_invalid_silence_lines():
+    """Make sure we won't use times that are outside the duration of the file."""
+    lines = [
+        "size=N/A time=00:00:02.00 bitrate=N/A",
+        " silence_end: 9.5 ",
+    ]
+    times = _parse_silence_lines(lines, 0.0, 10.0)
+    assert times == []
