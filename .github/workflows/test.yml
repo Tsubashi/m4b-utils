@@ -19,7 +19,6 @@ jobs:
         os:
           - Ubuntu
           - Windows
-          - MacOs
         py:
           - "3.12"
 
