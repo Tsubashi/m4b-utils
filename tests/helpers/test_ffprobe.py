@@ -63,7 +63,6 @@ def test_probe_data(mp3_path):
                 'karaoke': 0,
                 'lyrics': 0,
                 'metadata': 0,
-                'multilayer': 0,
                 'non_diegetic': 0,
                 'original': 0,
                 'still_image': 0,
@@ -85,6 +84,11 @@ def test_probe_data(mp3_path):
     # Remove items that can change between tests
     del probe.data['format']['filename']
     del probe.data['format']['tags']['encoder']
+
+    # Remove items that are different between GHA runners
+    if 'multilayer' in probe.data['streams'][0]['disposition']:
+        del probe.data['streams'][0]['disposition']['multilayer']
+
     assert (probe.data == expected)
 
 
