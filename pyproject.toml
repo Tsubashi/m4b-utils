@@ -21,7 +21,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["tox", "pytest-cov"]
+test = [
+    "pytest-cov",
+    "flake8",
+    "flake8-bugbear",
+    "flake8-docstrings",
+    "flake8-import-order",
+    "flake8-colors",
+    "pep8-naming"
+]
 
 [project.urls]
 repository = "https://github.com/Tsubashi/m4b-util"
@@ -36,7 +44,6 @@ write_to = "src/m4b_util/__version__.py"
 version = {attr = "m4b_util.__version__.__version__"}
 
 [tool.pytest.ini_options]
-# addopts = "--cov --cov-branch --cov-report html --cov-report term-missing --cov-fail-under 100"
 pythonpath = ["src"]
 
 [tool.coverage.run]
@@ -47,44 +54,3 @@ column_limit = 120
 
 [tool.isort]
 py_version = "auto"
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-isolated_build = True
-envlist = flake8,clean,py310,report
-
-[gh-actions]
-python =
-    3.10: flake8,py310
-
-[testenv]
-commands = pytest --cov {envsitepackagesdir}/src --cov-append --cov-report=term-missing
-deps =
-    pytest
-    pytest-cov
-
-[testenv:flake8]
-commands = flake8 src/ tests/
-skip_install = true
-deps =
-    flake8
-    flake8-bugbear
-    flake8-docstrings
-    flake8-import-order
-    flake8-colors
-    pep8-naming
-
-[testenv:clean]
-deps = coverage[toml]
-skip_install = true
-commands = coverage erase
-
-[testenv:report]
-deps = coverage[toml]
-skip_install = true
-commands =
-    coverage report
-    coverage html -d coverage_html
-
-"""
