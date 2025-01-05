@@ -28,6 +28,8 @@ def _parse_args():
     silence_options = parser.add_argument_group('split-by-silence options')
     silence_options.add_argument("--silence-threshold", default=-35, type=int, help='Silence threshold (in dB)')
     silence_options.add_argument("--silence-duration", default=3.0, type=float, help='Silence duration')
+    silence_options.add_argument("--padding", default=0.0, type=float,
+                                 help='Silence to add to the end of the segments once the original has been removed.')
 
     return parser.parse_args(sys.argv[2:])
 
@@ -80,5 +82,6 @@ def run():
         input_path=input_path,
         output_dir_path=output_path,
         output_pattern=args.output_pattern,
-        segment_list=segment_list
+        segment_list=segment_list,
+        padding=args.padding
     )

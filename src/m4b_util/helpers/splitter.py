@@ -7,9 +7,19 @@ def split(
         input_path,
         output_dir_path,
         segment_list,
-        output_pattern="segment_{i:04d}.mp3"
+        output_pattern="segment_{i:04d}.mp3",
+        padding=0.0
 ):
-    """Split a file into multiple, based on segments."""
+    """
+    Split a file into multiple, based on segments.
+
+    Args:
+        input_path (Path): Path to the input file.
+        output_dir_path (Path): Path to the directory to place the output files.
+        segment_list (list[Segment]): List of segments to split the file into.
+        output_pattern (str): Output filename pattern (e.g. `segment_{i:04d}.mp3`)
+        padding (float): Silence to add to the end of the segments once the original has been removed.
+    """
     cover_utils.extract_cover(input_path, output_dir_path / "cover.png")
 
     # Generate task list
@@ -33,6 +43,10 @@ def split(
         # If we have a title, add it to the metadata
         if segment.title:
             cmd.extend(["-metadata", f"title={segment.title}"])
+
+        # Add padding at the end of the segment
+        if padding > 0.0:
+            cmd.extend(["-af", f"apad=pad_dur={padding}"])
 
         # Finish the command with our output path
         cmd.append(output_path)

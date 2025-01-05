@@ -126,3 +126,31 @@ def test_title_metadata(silences_file_path, tmp_path):
         segment_list=segment_list,
     )
     testhelpers.check_output_folder(output_path=output_path, expected_files=expected_files, check_func=check_func)
+
+
+def test_padding(silences_file_path, tmp_path):
+    """Split a file into four parts with padding."""
+    def check_func(input_file_path):
+        probe = ffprobe.run_probe(input_file_path)
+        assert probe.data["format"]["duration"] == "3.024000"
+    output_path = tmp_path / "output"
+    segment_list = [
+        SegmentData(id=0, start_time=0.0, end_time=2.5, title="segment_0000"),
+        SegmentData(id=1, start_time=2.5, end_time=5.0, title="segment_0001"),
+        SegmentData(id=2, start_time=5.0, end_time=7.5, title="segment_0002"),
+        SegmentData(id=3, start_time=7.5, end_time=10., title="segment_0003"),
+
+    ]
+    expected_files = [
+        "segment_0000.mp3",
+        "segment_0001.mp3",
+        "segment_0002.mp3",
+        "segment_0003.mp3",
+    ]
+    splitter.split(
+        input_path=silences_file_path,
+        output_dir_path=output_path,
+        segment_list=segment_list,
+        padding=0.5,
+    )
+    testhelpers.check_output_folder(output_path=output_path, expected_files=expected_files, check_func=check_func)
