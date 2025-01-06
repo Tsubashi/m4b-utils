@@ -36,4 +36,4 @@ jobs:
       id: setup-ffmpeg
     - name: Test with pytest
       run: |
-        pytest --cov m4b_util --cov-report term-missing --cov-fail-under=100 -k "test_print_version"
+        pytest --cov m4b_util --cov-report term-missing --cov-fail-under=100 --cov-config pyproject.toml -k "test_print_version"
