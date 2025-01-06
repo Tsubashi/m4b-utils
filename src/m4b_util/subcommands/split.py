@@ -30,6 +30,8 @@ def _parse_args():
     silence_options.add_argument("--silence-duration", default=3.0, type=float, help='Silence duration')
     silence_options.add_argument("--padding", default=0.0, type=float,
                                  help='Silence to add to the end of the segments once the original has been removed.')
+    silence_options.add_argument("--trim-silence", action="store_true", default=False,
+                                 help='Remove silence from the start and end of segments.')
 
     return parser.parse_args(sys.argv[2:])
 
@@ -48,6 +50,7 @@ def run():
             end_time=args.end_time,
             silence_duration=args.silence_duration,
             silence_threshold=args.silence_threshold,
+            trim_silence=args.trim_silence,
         )
     elif args.mode.lower() in ["c", "chapter", "chapters"]:
         segment_list = find_chapters(
