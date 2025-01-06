@@ -2,7 +2,7 @@ name: Test python application
 
 on:
   push:
-    branches: [ "dev", "stable" ]
+    branches: "**"
   pull_request:
     branches: [ "dev", "stable" ]
 
