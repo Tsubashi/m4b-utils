@@ -198,6 +198,7 @@ def test_preserving_silence():
     times = parser.get_segments()
     assert times == [(0.0, 2.0), (2.0, 4.0), (4.0, 6.0), (6.0, 8.0), (8.0, 10.0)]
 
+
 def test_avoiding_double_endings():
     """When we see a silence end while preserving silence, avoid adding an end marker if it is already there."""
     lines = [
