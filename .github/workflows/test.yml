@@ -10,16 +10,38 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: test ${{ matrix.py }} - ${{ matrix.os }}
+  lint:
+    name: Lint (Flake8)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 flake8-bugbear flake8-docstrings flake8-import-order flake8-colors pep8-naming
+      - name: Lint with flake8
+        run: |
+          # Run a quick check for obvious issues python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Now run the full flake check
+          flake8 . --count --statistics
+  test:
+    name: Test Python ${{ matrix.py }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
+    needs: lint
     strategy:
       fail-fast: false
       matrix:
         os:
+          - Ubuntu
           - Windows
         py:
           - "3.12"
+          - "3.13"
 
     steps:
     - uses: actions/checkout@v3
@@ -30,10 +52,10 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov coverage[toml] .
+        pip install pytest pytest-cov .
     - name: Setup ffmpeg
       uses: FedericoCarboni/setup-ffmpeg@v3
       id: setup-ffmpeg
     - name: Test with pytest
       run: |
-        pytest --cov m4b_util --cov-report term-missing --cov-fail-under=100 --cov-config pyproject.toml -k "test_print_version"
+        pytest --cov m4b_util --cov-report term-missing --cov-fail-under=100 --cov-config pyproject.toml 
