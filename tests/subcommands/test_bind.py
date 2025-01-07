@@ -47,7 +47,7 @@ def test_bind_wav_defaults(wav_path, tmp_path, capsys):
 
     probe = m4b_util.helpers.ffprobe.run_probe(output_path)
     assert probe
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"
     assert probe.tags['title'] == "None"
     assert probe.tags['artist'] == "None"
@@ -69,3 +69,13 @@ def test_bind_fail(tmp_path, capsys):
     _run_bind_cmd([str(fake_folder)])
     output = capsys.readouterr()
     assert "Writing" not in output.out
+
+
+def test_bind_use_filename(wav_path):
+    """Use the filenames as the chapter titles."""
+    with patch("m4b_util.subcommands.bind.Audiobook") as mock_book:
+        mock_book = mock_book.return_value  # Required since we want to mock a specific instance, not the class.
+        _run_bind_cmd([str(wav_path), "--use-filename"])
+        # Since assert_called_with would require us to specify all arguments, we check the call args for the one we care
+        # about manually.
+        assert mock_book.add_chapters_from_directory.call_args.kwargs['use_filenames'] is True

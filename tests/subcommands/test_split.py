@@ -151,7 +151,8 @@ def test_split_audio_threshold_higher(tmp_path, variable_volume_segments_file_pa
         str(variable_volume_segments_file_path),
         "-o", str(output_path),
         "--silence-threshold", "-5",
-        "--silence-duration", "1.5"
+        "--silence-duration", "1.5",
+        "--trim-silence"
     ]
     with testhelpers.expect_exit_with_output(capsys, "No segments found."):
         _run_split_cmd(cmd)

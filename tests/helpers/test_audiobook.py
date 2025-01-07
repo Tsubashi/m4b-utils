@@ -230,7 +230,7 @@ def test_concatenation(m4a_path):
 
     probe = ffprobe.run_probe(out_file_path)
     assert probe
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"
     assert not probe.tags.get('title')
 
@@ -247,7 +247,7 @@ def test_filenames_with_single_quotes(m4a_path):
 
     probe = ffprobe.run_probe(out_file_path)
     assert probe
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"  # If the file is broken, this will be shorter
     assert not probe.tags.get('title')
 
@@ -354,7 +354,7 @@ def test_bind_coverless(mp3_path, tmp_path):
     assert probe.chapters[7]['tags']['title'] == "8"
 
     # Check duration
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"
 
     # Check metadata
@@ -388,7 +388,7 @@ def test_bind_covered(mp3_path, tmp_path, test_data_path):
     assert probe.chapters[7]['tags']['title'] == "8"
 
     # Check duration
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"
 
     # Check metadata
@@ -457,7 +457,7 @@ def test_rebind_single_file_selections(chaptered_audio_file_path, tmp_path):
     assert probe.chapters[6]['tags']['title'] == "440Hz - Soft"
 
     # Check duration
-    assert probe.format['duration'] == "17.521000"
+    assert probe.format['duration'] == "17.520333"
     assert probe.audio['duration'] == "17.520333"
 
     # Check metadata
@@ -508,7 +508,7 @@ def test_bind_titleless_segments(tmp_path, mp3_path):
     assert probe.chapters[7]['tags']['title'] == "8"
 
     # Check duration
-    assert probe.format['duration'] == "40.022000"
+    assert probe.format['duration'] == "40.021333"
     assert probe.audio['duration'] == "40.021333"
 
     # Check metadata

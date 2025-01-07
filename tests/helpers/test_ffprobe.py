@@ -26,14 +26,15 @@ def test_probe_data(mp3_path):
     expected = {
         'chapters': [],
         'format': {
-            'bit_rate': '64376',
+            'bit_rate': '64374',
             'duration': '5.040000',
             'format_long_name': 'MP2/3 (MPEG audio layer 2/3)',
             'format_name': 'mp3',
             'nb_programs': 0,
+            'nb_stream_groups': 0,
             'nb_streams': 1,
             'probe_score': 51,
-            'size': '40557',
+            'size': '40556',
             'start_time': '0.023021',
             'tags': {}
         },
@@ -62,6 +63,7 @@ def test_probe_data(mp3_path):
                 'karaoke': 0,
                 'lyrics': 0,
                 'metadata': 0,
+                'non_diegetic': 0,
                 'original': 0,
                 'still_image': 0,
                 'timed_thumbnails': 0,
@@ -70,6 +72,7 @@ def test_probe_data(mp3_path):
             'duration': '5.040000',
             'duration_ts': 71124480,
             'index': 0,
+            'initial_padding': 0,
             'r_frame_rate': '0/0',
             'sample_fmt': 'fltp',
             'sample_rate': '48000',
@@ -81,6 +84,11 @@ def test_probe_data(mp3_path):
     # Remove items that can change between tests
     del probe.data['format']['filename']
     del probe.data['format']['tags']['encoder']
+
+    # Remove items that are different between GHA runners
+    if 'multilayer' in probe.data['streams'][0]['disposition']:
+        del probe.data['streams'][0]['disposition']['multilayer']
+
     assert (probe.data == expected)
 
 

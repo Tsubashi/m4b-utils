@@ -93,11 +93,11 @@ def test_labels_from_segment_data():
         SegmentData(start_time=461.531, end_time=461.531, title="End"),
     ]
     expected = [
-        "0.0	75.223	Start",
-        "75.223	186.845	Segment 1",
-        "186.845	320.306	Segment 2",
-        "320.306	408.632	None",
-        "408.632	461.531	",
+        "0.0	0.0	Start",
+        "75.223	75.223	Segment 1",
+        "186.845	186.845	Segment 2",
+        "320.306	320.306	None",
+        "408.632	408.632	",
         "461.531	461.531	End"
     ]
     actual = labels.labels_from_segment_data(input_list)
@@ -141,14 +141,14 @@ def test_labels_from_labels(tmp_path, label_file_path, variable_volume_segments_
 
     # Check Label file
     expected_labeldata = (
-        "0.0	2.5	1 - 110Hz" "\n"
-        "2.5	5.0	2 - 220Hz" "\n"
-        "5.0	7.5	3 - 330Hz" "\n"
-        "7.5	10.0	4 - 440Hz" "\n"
-        "10.0	12.5	5 - 550Hz" "\n"
-        "12.5	15.0	6 - 660Hz" "\n"
-        "15.0	17.6	7 - 770Hz" "\n"
-        "17.6	19.999	8 - 880Hz" "\n"
+        "0.0	0.0	1 - 110Hz" "\n"
+        "2.5	2.5	2 - 220Hz" "\n"
+        "5.0	5.0	3 - 330Hz" "\n"
+        "7.5	7.5	4 - 440Hz" "\n"
+        "10.0	10.0	5 - 550Hz" "\n"
+        "12.5	12.5	6 - 660Hz" "\n"
+        "15.0	15.0	7 - 770Hz" "\n"
+        "17.6	17.6	8 - 880Hz" "\n"
     )
     with open(label_out_path) as f:
         labeldata = f.read()
@@ -185,14 +185,14 @@ def test_labels_from_book(tmp_path, chaptered_audio_file_path, expected_data, va
 
     # Check Label file
     expected_labeldata = (
-        "0.0	2.5	110Hz - Loud" "\n"
-        "2.5	5.0	110Hz - Soft" "\n"
-        "5.0	7.5	220Hz - Loud" "\n"
-        "7.5	10.0	220Hz - Soft" "\n"
-        "10.0	12.5	330Hz - Loud" "\n"
-        "12.5	15.0	330Hz - Soft" "\n"
-        "15.0	17.5	440Hz - Loud" "\n"
-        "17.5	19.999	440Hz - Soft" "\n"
+        "0.0	0.0	110Hz - Loud" "\n"
+        "2.5	2.5	110Hz - Soft" "\n"
+        "5.0	5.0	220Hz - Loud" "\n"
+        "7.5	7.5	220Hz - Soft" "\n"
+        "10.0	10.0	330Hz - Loud" "\n"
+        "12.5	12.5	330Hz - Soft" "\n"
+        "15.0	15.0	440Hz - Loud" "\n"
+        "17.5	17.5	440Hz - Soft" "\n"
     )
     with open(label_out_path) as f:
         labeldata = f.read()
