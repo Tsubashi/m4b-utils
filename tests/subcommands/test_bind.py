@@ -29,6 +29,16 @@ def test_show_order(mp3_path, capsys):
     assert (output.out == expected_output)
 
 
+def test_show_order_for_specific_files(mp3_path, capsys):
+    """Show the order the files would be bound in, even when manually specified."""
+    _run_bind_cmd(["-f" f"{mp3_path}/5 - 550Hz.mp3", "-f" f"{mp3_path}/1 - 110Hz.mp3", "--show-order"])
+
+    output = capsys.readouterr()
+    expected_output = ('  0:    5 - 550Hz.mp3\n'
+                       '  1:    1 - 110Hz.mp3\n'
+                       )
+    assert (output.out == expected_output)
+
 def test_nonexistent_output_dir(capsys):
     """Alert the user if the output dir doesn't exist."""
     _run_bind_cmd(["fake/input/dir", "--output-dir", "/some/nonexistent/directory/"])
@@ -79,3 +89,46 @@ def test_bind_use_filename(wav_path):
         # Since assert_called_with would require us to specify all arguments, we check the call args for the one we care
         # about manually.
         assert mock_book.add_chapters_from_directory.call_args.kwargs['use_filenames'] is True
+
+
+def test_bind_specific_files(wav_path, tmp_path, capsys):
+    """Bind a folder of wav files into and audiobook."""
+    _run_bind_cmd(["-o", str(tmp_path), "-f", f"{wav_path}/1 - 110Hz.wav", "-f", f"{wav_path}/3 - 330Hz.wav"])
+
+    # Check for output
+    output_path = tmp_path / "None - None.m4b"
+    assert output_path.is_file()
+
+    probe = m4b_util.helpers.ffprobe.run_probe(output_path)
+    assert probe
+    assert probe.format['duration'] == "10.021333"
+    assert probe.audio['duration'] == "10.021333"
+    assert probe.tags['title'] == "None"
+    assert probe.tags['artist'] == "None"
+    assert probe.tags['album'] == "None"
+    assert probe.tags['date'] == "None"
+    assert probe.tags['genre'] == "Audiobook"
+
+def test_bind_files_specified_with_input_dir_too(mp3_path, tmp_path, capsys):
+    """Bind specific files, even if an input directory is specified."""
+    _run_bind_cmd(
+        [str(mp3_path), "-o", str(tmp_path), "-f", f"{mp3_path}/1 - 110Hz.mp3", "-f", f"{mp3_path}/3 - 330Hz.mp3"]
+    )
+
+    # Check that we warn the user.
+    output = capsys.readouterr()
+    assert ("Warning: Both an input folder and specific files were specified." in output.out)
+
+    # Check for output
+    output_path = tmp_path / "None - None.m4b"
+    assert output_path.is_file()
+    probe = m4b_util.helpers.ffprobe.run_probe(output_path)
+    assert probe.format['duration'] == "10.021333"
+
+
+def test_bind_no_files(capsys):
+    """Alert the user if no files were specified."""
+    _run_bind_cmd([])
+
+    output = capsys.readouterr()
+    assert ("You must provide either an input folder or a list of files" in output.out)
